@@ -169,7 +169,7 @@ Contributing is pretty chill and is highly appreciated! Just send a PR and/or cr
 
 ## Credits
 
-- [Jesús García](https://github.com/novadaemon)
+- [All contributors](https://github.com/novadaemon/filament-combobox/contributors)
 
 ## License
 
