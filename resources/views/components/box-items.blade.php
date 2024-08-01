@@ -1,5 +1,5 @@
 <div
-    class="border border-gray-200 dark:border-gray-500 rounded-lg dark:bg-gray-800 overflow-y-scroll h-full @if ($disabled) bg-gray-50 text-gray-500 [-webkit-text-fill-color:theme(colors.gray.500)] dark:text-gray-400 dark:[-webkit-text-fill-color:theme(colors.gray.400)] @endif">
+    class="border border-gray-200 dark:border-gray-600 rounded-lg bg-white/60 dark:bg-neutral-800/70 overflow-y-auto h-full @if ($disabled) bg-gray-50 text-gray-500 [-webkit-text-fill-color:theme(colors.gray.500)] dark:text-gray-400 dark:[-webkit-text-fill-color:theme(colors.gray.400)] @endif">
     <ul class="py-1 text-base text-gray-950 dark:text-white sm:text-sm sm:leading-6 ">
         <template x-for="(item, key) in {{ $target }}">
             <li>

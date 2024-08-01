@@ -8,7 +8,7 @@
     $statePath = $getStatePath();
 @endphp
 <x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
-    <div @class(['flex', 'gap-2', 'min-h-40', $height]) x-ignore ax-load
+    <div class="flex gap-2 min-h-40" style="height: {{ $height }}" x-ignore ax-load
         ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('combobox', 'novadaemon/filament-combobox') }}"
         x-data="cbFormComponent({ options: @js($options), selected: @js($selected), wire: $wire, statePath: @js($statePath) })" wire:ignore>
         <div class="w-1/2 flex flex-col h-full">
