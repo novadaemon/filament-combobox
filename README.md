@@ -2,6 +2,10 @@
 
 Side by side combo box multiselect field to use in your [filamentphp](https://filamentphp.com/) forms.
 
+<div class="filament-hidden">
+    <img src="resources/img/filament-combobox.jpg" alt="Cover"/>
+</div>
+
 ## Installation
 
 You can install the package via composer:
@@ -173,4 +177,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Screenshot
 
-![Screenshot](screenshot.webp)
+![Screenshot](resources/img/screenshot.webp)
