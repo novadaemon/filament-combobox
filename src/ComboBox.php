@@ -20,7 +20,7 @@ class ComboBox extends Select
 
     protected bool | Closure $boxSearchs = false;
 
-    protected string $height = '200px';
+    protected string $height = '144px';
 
     protected string $view = 'filament-combobox::combobox';
 

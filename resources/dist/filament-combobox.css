@@ -2426,6 +2426,10 @@ select {
   margin-top: auto;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
 .line-clamp-\[--line-clamp\] {
   overflow: hidden;
   display: -webkit-box;
@@ -2574,6 +2578,18 @@ select {
   min-height: 100vh;
 }
 
+.min-h-64 {
+  min-height: 16rem;
+}
+
+.min-h-60 {
+  min-height: 15rem;
+}
+
+.min-h-36 {
+  min-height: 9rem;
+}
+
 .w-1 {
   width: 0.25rem;
 }
@@ -2669,6 +2685,18 @@ select {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .min-w-0 {
@@ -2844,6 +2872,10 @@ select {
 
 .grow {
   flex-grow: 1;
+}
+
+.grow-0 {
+  flex-grow: 0;
 }
 
 .table-auto {
@@ -3053,6 +3085,10 @@ select {
 
 .grid-rows-\[1fr_auto_1fr\] {
   grid-template-rows: 1fr auto 1fr;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-row-reverse {
