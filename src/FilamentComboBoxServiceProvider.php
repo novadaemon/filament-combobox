@@ -1,6 +1,6 @@
 <?php
 
-namespace Novadaemon\FilamentComboBox;
+namespace Novadaemon\FilamentCombobox;
 
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Asset;
@@ -9,7 +9,7 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\AlpineComponent;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FilamentComboBoxServiceProvider extends PackageServiceProvider
+class FilamentComboboxServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-combobox';
 

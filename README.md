@@ -1,6 +1,6 @@
 # novadaemon/filament-combobox
 
-Side by side combo box multiselect field to use in your [FilamentPHP](https://filamentphp.com/) forms.
+Side by side combobox multiselect field to use in your [FilamentPHP](https://filamentphp.com/) forms.
 
 <div class="filament-hidden">
     <img src="resources/img/filament-combobox.jpg" alt="Cover"/>
@@ -21,7 +21,7 @@ This package supports Filament 3.x
 Simply use the component as you'd use any other Filament field. It's especially perfect for the resource view page where it blends right in.
 
 ```php
-use Novadaemon\FilamentComboBox\ComboBox;
+use Novadaemon\FilamentCombobox\Combobox;
 
 class FileResource extends Resource
 {
@@ -29,7 +29,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('vegetables')
+                Combobox::make('vegetables')
                 ->options([
                     'carrot' => 'Carrot',
                     'potato' => 'Potato',
@@ -40,12 +40,12 @@ class FileResource extends Resource
 }
 ```
 
-Since the ComboBox component extends the **Filament\Forms\Components\Select** class, it is possible to use almost all methods of the parent component.
+Since the Combobox component extends the **Filament\Forms\Components\Select** class, it is possible to use almost all methods of the parent component.
 
 ### Integrating with an Eloquent relationship
 
 ```php
-use Novadaemon\FilamentComboBox\ComboBox;
+use Novadaemon\FilamentCombobox\Combobox;
 
 class FileResource extends Resource
 {
@@ -53,7 +53,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
             ]);
     }
@@ -65,7 +65,7 @@ class FileResource extends Resource
 ### Enabling search in the boxes
 
 ```php
-use Novadaemon\FilamentComboBox\ComboBox;
+use Novadaemon\FilamentCombobox\Combobox;
 
 class FileResource extends Resource
 {
@@ -73,7 +73,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
                 ->boxSearchs()
             ]);
@@ -90,7 +90,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
                 ->boxSearchs(fn() => auth()->user()->isAdmin())
             ]);
@@ -109,7 +109,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
                 ->height('500px')
             ]);
@@ -128,7 +128,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
                 ->optionsLabel('Available categories')
                 ->selectedLabel('Selected categories')
@@ -146,7 +146,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                ComboBox::make('categories')
+                Combobox::make('categories')
                 ->relationship('categories', 'name')
                 ->showLabels(false)
             ]);

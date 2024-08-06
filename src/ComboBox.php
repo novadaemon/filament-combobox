@@ -1,13 +1,13 @@
 <?php
 
-namespace Novadaemon\FilamentComboBox;
+namespace Novadaemon\FilamentCombobox;
 
 use Closure;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Concerns;
 use Filament\Forms\Components\Component;
 
-class ComboBox extends Select
+class Combobox extends Select
 {
     use Concerns\HasOptions;
     use Concerns\HasPivotData;

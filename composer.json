@@ -1,6 +1,6 @@
 {
     "name": "novadaemon/filament-combobox",
-    "description": "Side by side combo box multiselect field to use in your FilamentPHP forms",
+    "description": "Side by side combobox multiselect field to use in your FilamentPHP forms",
     "keywords": [
         "filament",
         "laravel",
@@ -46,12 +46,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Novadaemon\\FilamentComboBox\\": "src/"
+            "Novadaemon\\FilamentCombobox\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Novadaemon\\FilamentComboBox\\Tests\\": "tests/"
+            "Novadaemon\\FilamentCombobox\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -71,7 +71,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Novadaemon\\FilamentComboBox\\FilamentComboBoxServiceProvider"
+                "Novadaemon\\FilamentCombobox\\FilamentComboboxServiceProvider"
             ]
         }
     },
