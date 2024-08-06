@@ -3,6 +3,7 @@
 namespace Novadaemon\FilamentComboBox;
 
 use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Asset;
 use Spatie\LaravelPackageTools\Package;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\AlpineComponent;

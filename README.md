@@ -1,6 +1,6 @@
 # novadaemon/filament-combobox
 
-Side by side combo box multiselect field to use in your [filamentphp](https://filamentphp.com/) forms.
+Side by side combo box multiselect field to use in your [FilamentPHP](https://filamentphp.com/) forms.
 
 <div class="filament-hidden">
     <img src="resources/img/filament-combobox.jpg" alt="Cover"/>

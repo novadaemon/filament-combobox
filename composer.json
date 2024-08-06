@@ -1,6 +1,6 @@
 {
     "name": "novadaemon/filament-combobox",
-    "description": "Side by side combo box multiselect field to use in your filamentphp forms",
+    "description": "Side by side combo box multiselect field to use in your FilamentPHP forms",
     "keywords": [
         "filament",
         "laravel",
