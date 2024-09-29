@@ -177,4 +177,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Screenshot
 
-![Screenshot](resources/img/screenshot.webp)
+![Screenshot](https://raw.githubusercontent.com/novadaemon/filament-combobox/refs/heads/main/resources/img/screenshot.webp)
