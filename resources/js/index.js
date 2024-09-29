@@ -8,10 +8,12 @@ export default function cbFormComponent({
         optionsOriginal: [],
         options: [],
         selectedOriginal: [],
+        allOptions: [],
         selected: [],
         wire: wire,
         statePath: statePath,
         init: function () {
+            this.allOptions = options;
             this.prepareRows();
             this.options = this.optionsOriginal;
             this.selected = this.selectedOriginal;
@@ -69,7 +71,16 @@ export default function cbFormComponent({
             this.updateState();
         },
         updateState: function () {
-            wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selected)
+            const sortByOriginalIndex = (a, b) => {
+                const indexA = this.allOptions.findIndex(o => o.value === a.value);
+                const indexB = this.allOptions.findIndex(o => o.value === b.value);
+                return indexA - indexB;
+            };
+
+            this.options.sort(sortByOriginalIndex);
+            this.selected.sort(sortByOriginalIndex);
+
+            wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selected);
         }
     }
 }
