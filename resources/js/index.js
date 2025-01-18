@@ -36,7 +36,19 @@ export default function cbFormComponent({
             })
         },
         search: function (target, keyword) {
-            this[target] = this[target + 'Original'].filter(item => item.label.toLowerCase().includes(keyword.toLowerCase()))
+            if (target === 'options') {
+                // Only filter items on the left side
+                this.options = this.optionsOriginal.filter(item =>
+                    item.label.toLowerCase().includes(keyword.toLowerCase()) &&
+                    !this.selected.some(selectedItem => selectedItem.value === item.value)
+                );
+            } else if (target === 'selected') {
+                // Only filter items on the right side
+                this.selected = this.selected.filter(item =>
+                    item.label.toLowerCase().includes(keyword.toLowerCase()) &&
+                    !this.options.some(optionItem => optionItem.value === item.value)
+                );
+            }
         },
         toggleHighlight: function (target, key) {
             this[target][key].highlighted = !this[target][key].highlighted
