@@ -5,113 +5,171 @@ export default function cbFormComponent({
                                             wire
                                         }) {
     return {
-        optionsOriginal: [],
         options: [],
+        selected: [],
+        optionsOriginal: [],
         selectedOriginal: [],
         allOptions: [],
-        selected: [],
         wire: wire,
         statePath: statePath,
-        isSearchActive: { options: false, selected: false },
-        searchKeyword: { options: '', selected: '' },
+        searchState: {
+            options: {
+                active: false,
+                keyword: ''
+            },
+            selected: {
+                active: false,
+                keyword: ''
+            }
+        },
+
         init: function () {
             this.allOptions = options;
-            this.prepareRows();
-            this.options = this.optionsOriginal;
-            this.selected = this.selectedOriginal;
+            this.prepareInitialData();
+            this.syncDisplayWithMaster();
         },
-        prepareRows: function () {
+
+        prepareInitialData: function () {
+            this.optionsOriginal = [];
+            this.selectedOriginal = [];
+
             options.forEach(option => {
-                if (selected.indexOf(option.value) !== -1) {
-                    this.selectedOriginal.push({
-                        value: option.value,
-                        label: option.label,
-                        highlighted: false
-                    })
+                const item = {
+                    value: option.value,
+                    label: option.label,
+                    highlighted: false
+                };
+
+                if (selected.includes(option.value)) {
+                    this.selectedOriginal.push(item);
                 } else {
-                    this.optionsOriginal.push({
-                        value: option.value,
-                        label: option.label,
-                        highlighted: false
-                    })
+                    this.optionsOriginal.push(item);
                 }
-            })
+            });
         },
-        search: function (target, keyword) {
-            this.isSearchActive[target] = keyword.length > 0;
-            this.searchKeyword[target] = keyword;
 
-            if (target === 'options') {
+        syncDisplayWithMaster: function() {
+            if (this.searchState.options.active) {
+                const keyword = this.searchState.options.keyword.toLowerCase();
                 this.options = this.optionsOriginal.filter(item =>
-                    item.label.toLowerCase().includes(keyword.toLowerCase()) &&
-                    !this.selectedOriginal.some(selectedItem => selectedItem.value === item.value)
-                );
-            } else if (target === 'selected') {
-                this.selected = this.selectedOriginal.filter(item =>
-                    item.label.toLowerCase().includes(keyword.toLowerCase())
-                );
-            }
-        },
-        toggleHighlight: function (target, key) {
-            this[target][key].highlighted = !this[target][key].highlighted
-        },
-        moveItem: function (item, origin, destiny) {
-            this[destiny].push(item)
-            this[origin].splice(this[origin].indexOf(item), 1)
-            if (destiny === 'selected') {
-                this.selectedOriginal.push(item);
-            } else if (destiny === 'options') {
-                this.selectedOriginal = this.selectedOriginal.filter(i => i.value !== item.value);
-            }
-            this.updateState();
-        },
-        moveToRight: function () {
-            const items = this.options.filter(item => item.highlighted)
-            items.map(item => item.highlighted = false)
-            this.selectedOriginal.push(...items)
-            this.options = this.options.filter(item => items.map(i => i.value).indexOf(item.value) === -1)
-            this.updateState();
-        },
-        moveToLeft: function () {
-            const items = this.selected.filter(item => item.highlighted)
-            items.map(item => item.highlighted = false)
-            this.options.push(...items)
-            this.selectedOriginal = this.selectedOriginal.filter(item => !items.some(i => i.value === item.value))
-            this.updateState();
-        },
-        moveToRightAll: function () {
-            const itemsToMove = this.isSearchActive.options ? this.options : this.optionsOriginal;
-            this.selectedOriginal.push(...itemsToMove);
-            this.options = [];
-
-            if (this.isSearchActive.options) {
-                this.optionsOriginal = this.optionsOriginal.filter(item =>
-                    !itemsToMove.some(i => i.value === item.value)
+                    item.label.toLowerCase().includes(keyword)
                 );
             } else {
-                this.optionsOriginal = [];
+                this.options = [...this.optionsOriginal];
             }
 
+            if (this.searchState.selected.active) {
+                const keyword = this.searchState.selected.keyword.toLowerCase();
+                this.selected = this.selectedOriginal.filter(item =>
+                    item.label.toLowerCase().includes(keyword)
+                );
+            } else {
+                this.selected = [...this.selectedOriginal];
+            }
+        },
+
+        search: function (target, keyword) {
+            this.searchState[target].keyword = keyword;
+            this.searchState[target].active = keyword.length > 0;
+            this.syncDisplayWithMaster();
+        },
+
+        toggleHighlight: function (target, key) {
+            this[target][key].highlighted = !this[target][key].highlighted;
+        },
+
+        moveItem: function (item, fromType, toType) {
+            const fromOriginal = fromType === 'options' ? 'optionsOriginal' : 'selectedOriginal';
+            const toOriginal = toType === 'options' ? 'optionsOriginal' : 'selectedOriginal';
+
+            const existingItem = this[toOriginal].find(i => i.value === item.value);
+            if (existingItem) {
+                return;
+            }
+
+            const itemToMove = this[fromOriginal].find(i => i.value === item.value);
+            if (!itemToMove) {
+                return;
+            }
+
+            this[fromOriginal] = this[fromOriginal].filter(i => i.value !== item.value);
+            this[toOriginal].push({ ...itemToMove, highlighted: false });
+
+            this.syncDisplayWithMaster();
             this.updateState();
         },
-        moveToLeftAll: function () {
-            const itemsToMove = this.isSearchActive.selected ? this.selected : this.selectedOriginal;
-            this.options.push(...itemsToMove);
-            this.optionsOriginal.push(...itemsToMove);
-            this.selected = [];
 
-            if (this.isSearchActive.selected) {
-                this.selectedOriginal = this.selectedOriginal.filter(item =>
-                    !itemsToMove.some(i => i.value === item.value)
-                );
+        moveToRight: function () {
+            const itemsToMove = this.options.filter(item => item.highlighted);
+            itemsToMove.forEach(item => {
+                const originalItem = this.optionsOriginal.find(i => i.value === item.value);
+                if (originalItem) {
+                    this.moveItem(originalItem, 'options', 'selected');
+                }
+            });
+        },
+
+        moveToLeft: function () {
+            const itemsToMove = this.selected.filter(item => item.highlighted);
+            itemsToMove.forEach(item => {
+                const originalItem = this.selectedOriginal.find(i => i.value === item.value);
+                if (originalItem) {
+                    this.moveItem(originalItem, 'selected', 'options');
+                }
+            });
+        },
+
+        moveToRightAll: function () {
+            const sourceItems = this.searchState.options.active ?
+                this.options : this.optionsOriginal;
+
+            sourceItems.forEach(item => {
+                const originalItem = this.optionsOriginal.find(i => i.value === item.value);
+                if (originalItem && !this.selectedOriginal.some(s => s.value === item.value)) {
+                    this.selectedOriginal.push({ ...originalItem, highlighted: false });
+                }
+            });
+
+            this.optionsOriginal = this.optionsOriginal.filter(item =>
+                !sourceItems.some(s => s.value === item.value)
+            );
+
+            if (!this.searchState.options.active) {
+                this.searchState.options.keyword = '';
+            }
+
+            this.syncDisplayWithMaster();
+            this.updateState();
+        },
+
+        moveToLeftAll: function () {
+            const sourceItems = this.searchState.selected.active ?
+                this.selected : this.selectedOriginal;
+
+            sourceItems.forEach(item => {
+                const originalItem = this.selectedOriginal.find(i => i.value === item.value);
+                if (originalItem && !this.optionsOriginal.some(o => o.value === item.value)) {
+                    this.optionsOriginal.push({ ...originalItem, highlighted: false });
+                }
+            });
+
+            if (this.searchState.selected.active) {
+                const itemsToRemove = new Set(sourceItems.map(item => item.value));
+                this.selectedOriginal = this.selectedOriginal.filter(item => !itemsToRemove.has(item.value));
             } else {
                 this.selectedOriginal = [];
             }
 
+            if (!this.searchState.selected.active) {
+                this.searchState.selected.keyword = '';
+            }
+
+            this.syncDisplayWithMaster();
             this.updateState();
         },
+
         updateState: function () {
-            this.options = [...new Map(this.options.map(item => [item.value, item])).values()];
+            this.optionsOriginal = [...new Map(this.optionsOriginal.map(item => [item.value, item])).values()];
             this.selectedOriginal = [...new Map(this.selectedOriginal.map(item => [item.value, item])).values()];
 
             const sortByOriginalIndex = (a, b) => {
@@ -120,16 +178,10 @@ export default function cbFormComponent({
                 return indexA - indexB;
             };
 
-            this.options.sort(sortByOriginalIndex);
+            this.optionsOriginal.sort(sortByOriginalIndex);
             this.selectedOriginal.sort(sortByOriginalIndex);
 
-            if (this.isSearchActive.selected) {
-                this.selected = this.selectedOriginal.filter(item =>
-                    item.label.toLowerCase().includes(this.searchKeyword.selected.toLowerCase())
-                );
-            } else {
-                this.selected = [...this.selectedOriginal];
-            }
+            this.syncDisplayWithMaster();
 
             wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selectedOriginal);
         }
