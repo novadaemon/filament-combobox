@@ -1,98 +1,189 @@
 export default function cbFormComponent({
-    options,
-    selected,
-    statePath,
-    wire
-}) {
+                                            options,
+                                            selected,
+                                            statePath,
+                                            wire
+                                        }) {
     return {
-        optionsOriginal: [],
         options: [],
+        selected: [],
+        optionsOriginal: [],
         selectedOriginal: [],
         allOptions: [],
-        selected: [],
         wire: wire,
         statePath: statePath,
-        init: function () {
-            this.allOptions = options;
-            this.prepareRows();
-            this.options = this.optionsOriginal;
-            this.selected = this.selectedOriginal;
-        },
-        prepareRows: function () {
-            options.forEach(option => {
-                if (selected.indexOf(option.value) !== -1) {
-                    this.selectedOriginal.push({
-                        value: option.value,
-                        label: option.label,
-                        highlighted: false
-                    })
-                } else {
-                    this.optionsOriginal.push({
-                        value: option.value,
-                        label: option.label,
-                        highlighted: false
-                    })
-                }
-            })
-        },
-        search: function (target, keyword) {
-            if (target === 'options') {
-                // Only filter items on the left side
-                this.options = this.optionsOriginal.filter(item =>
-                    item.label.toLowerCase().includes(keyword.toLowerCase()) &&
-                    !this.selected.some(selectedItem => selectedItem.value === item.value)
-                );
-            } else if (target === 'selected') {
-                // Only filter items on the right side
-                this.selected = this.selected.filter(item =>
-                    item.label.toLowerCase().includes(keyword.toLowerCase()) &&
-                    !this.options.some(optionItem => optionItem.value === item.value)
-                );
+        searchState: {
+            options: {
+                active: false,
+                keyword: ''
+            },
+            selected: {
+                active: false,
+                keyword: ''
             }
         },
+
+        init: function () {
+            this.allOptions = options;
+            this.prepareInitialData();
+            this.syncDisplayWithMaster();
+        },
+
+        prepareInitialData: function () {
+            this.optionsOriginal = [];
+            this.selectedOriginal = [];
+
+            options.forEach(option => {
+                const item = {
+                    value: option.value,
+                    label: option.label,
+                    highlighted: false
+                };
+
+                if (selected.includes(option.value)) {
+                    this.selectedOriginal.push(item);
+                } else {
+                    this.optionsOriginal.push(item);
+                }
+            });
+        },
+
+        syncDisplayWithMaster: function() {
+            if (this.searchState.options.active) {
+                const keyword = this.searchState.options.keyword.toLowerCase();
+                this.options = this.optionsOriginal.filter(item =>
+                    item.label.toLowerCase().includes(keyword)
+                );
+            } else {
+                this.options = [...this.optionsOriginal];
+            }
+
+            if (this.searchState.selected.active) {
+                const keyword = this.searchState.selected.keyword.toLowerCase();
+                this.selected = this.selectedOriginal.filter(item =>
+                    item.label.toLowerCase().includes(keyword)
+                );
+            } else {
+                this.selected = [...this.selectedOriginal];
+            }
+        },
+
+        search: function (target, keyword) {
+            this.searchState[target].keyword = keyword;
+            this.searchState[target].active = keyword.length > 0;
+            this.syncDisplayWithMaster();
+        },
+
         toggleHighlight: function (target, key) {
-            this[target][key].highlighted = !this[target][key].highlighted
+            this[target][key].highlighted = !this[target][key].highlighted;
         },
-        moveItem: function (item, origin, destiny) {
-            this[destiny].push(item)
-            this[origin].splice(this[origin].indexOf(item), 1)
+
+        moveItem: function (item, fromType, toType) {
+            const fromOriginal = fromType === 'options' ? 'optionsOriginal' : 'selectedOriginal';
+            const toOriginal = toType === 'options' ? 'optionsOriginal' : 'selectedOriginal';
+
+            const existingItem = this[toOriginal].find(i => i.value === item.value);
+            if (existingItem) {
+                return;
+            }
+
+            const itemToMove = this[fromOriginal].find(i => i.value === item.value);
+            if (!itemToMove) {
+                return;
+            }
+
+            this[fromOriginal] = this[fromOriginal].filter(i => i.value !== item.value);
+            this[toOriginal].push({ ...itemToMove, highlighted: false });
+
+            this.syncDisplayWithMaster();
             this.updateState();
         },
+
         moveToRight: function () {
-            const items = this.options.filter(item => item.highlighted)
-            items.map(item => item.highlighted = false)
-            this.selected.push(...items)
-            this.options = this.options.filter(item => items.map(i => i.value).indexOf(item.value) === -1)
-            this.updateState();
+            const itemsToMove = this.options.filter(item => item.highlighted);
+            itemsToMove.forEach(item => {
+                const originalItem = this.optionsOriginal.find(i => i.value === item.value);
+                if (originalItem) {
+                    this.moveItem(originalItem, 'options', 'selected');
+                }
+            });
         },
+
         moveToLeft: function () {
-            const items = this.selected.filter(item => item.highlighted)
-            items.map(item => item.highlighted = false)
-            this.options.push(...items)
-            this.selected = this.selected.filter(item => items.map(i => i.value).indexOf(item.value) === -1)
-            this.updateState();
+            const itemsToMove = this.selected.filter(item => item.highlighted);
+            itemsToMove.forEach(item => {
+                const originalItem = this.selectedOriginal.find(i => i.value === item.value);
+                if (originalItem) {
+                    this.moveItem(originalItem, 'selected', 'options');
+                }
+            });
         },
+
         moveToRightAll: function () {
-            this.selected.push(...this.options)
-            this.options = []
+            const sourceItems = this.searchState.options.active ?
+                this.options : this.optionsOriginal;
+
+            sourceItems.forEach(item => {
+                const originalItem = this.optionsOriginal.find(i => i.value === item.value);
+                if (originalItem && !this.selectedOriginal.some(s => s.value === item.value)) {
+                    this.selectedOriginal.push({ ...originalItem, highlighted: false });
+                }
+            });
+
+            this.optionsOriginal = this.optionsOriginal.filter(item =>
+                !sourceItems.some(s => s.value === item.value)
+            );
+
+            if (!this.searchState.options.active) {
+                this.searchState.options.keyword = '';
+            }
+
+            this.syncDisplayWithMaster();
             this.updateState();
         },
+
         moveToLeftAll: function () {
-            this.options.push(...this.selected)
-            this.selected = []
+            const sourceItems = this.searchState.selected.active ?
+                this.selected : this.selectedOriginal;
+
+            sourceItems.forEach(item => {
+                const originalItem = this.selectedOriginal.find(i => i.value === item.value);
+                if (originalItem && !this.optionsOriginal.some(o => o.value === item.value)) {
+                    this.optionsOriginal.push({ ...originalItem, highlighted: false });
+                }
+            });
+
+            if (this.searchState.selected.active) {
+                const itemsToRemove = new Set(sourceItems.map(item => item.value));
+                this.selectedOriginal = this.selectedOriginal.filter(item => !itemsToRemove.has(item.value));
+            } else {
+                this.selectedOriginal = [];
+            }
+
+            if (!this.searchState.selected.active) {
+                this.searchState.selected.keyword = '';
+            }
+
+            this.syncDisplayWithMaster();
             this.updateState();
         },
+
         updateState: function () {
+            this.optionsOriginal = [...new Map(this.optionsOriginal.map(item => [item.value, item])).values()];
+            this.selectedOriginal = [...new Map(this.selectedOriginal.map(item => [item.value, item])).values()];
+
             const sortByOriginalIndex = (a, b) => {
                 const indexA = this.allOptions.findIndex(o => o.value === a.value);
                 const indexB = this.allOptions.findIndex(o => o.value === b.value);
                 return indexA - indexB;
             };
 
-            this.options.sort(sortByOriginalIndex);
-            this.selected.sort(sortByOriginalIndex);
+            this.optionsOriginal.sort(sortByOriginalIndex);
+            this.selectedOriginal.sort(sortByOriginalIndex);
 
-            wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selected);
+            this.syncDisplayWithMaster();
+
+            wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selectedOriginal);
         }
     }
 }
