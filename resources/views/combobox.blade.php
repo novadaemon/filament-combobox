@@ -36,7 +36,7 @@
 
             </div>
         @endif
-        <div class="w-full flex min-h-36" style="height: {{ $height }}">
+        <div class="w-full flex" style="height: {{ $height }}">
             <div class="w-1/2 h-full">
                 <x-filament-combobox::box-items :target="'options'" :disabled="$isDisabled()" />
             </div>

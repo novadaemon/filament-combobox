@@ -68,7 +68,7 @@ class Combobox extends Select
     {
         $string = (string) $this->evaluate($condition);
 
-        $this->height = 'h-[' . $string . ']';
+        $this->height = $string;
 
         return $this;
     }
