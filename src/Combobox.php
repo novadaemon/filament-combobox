@@ -40,6 +40,7 @@ class Combobox extends Select
     {
         $values = collect($values)->pluck('value')->toArray();
         $this->state($values);
+        $this->callAfterStateUpdated();
     }
 
     public function isMultiple(): bool
