@@ -1,9 +1,9 @@
 export default function cbFormComponent({
-                                            options,
-                                            selected,
-                                            statePath,
-                                            wire
-                                        }) {
+  options,
+  selected,
+  statePath,
+  wire
+}) {
     return {
         options: [],
         selected: [],
@@ -69,6 +69,7 @@ export default function cbFormComponent({
         },
 
         search: function (target, keyword) {
+            console.log('search', target, keyword);
             this.searchState[target].keyword = keyword;
             this.searchState[target].active = keyword.length > 0;
             this.syncDisplayWithMaster();
@@ -183,7 +184,7 @@ export default function cbFormComponent({
 
             this.syncDisplayWithMaster();
 
-            wire.dispatchFormEvent('filament-combobox::updateState', this.statePath, this.selectedOriginal);
+            wire.dispatch('filament-combobox::updateState', this.statePath, this.selectedOriginal);
         }
     }
 }

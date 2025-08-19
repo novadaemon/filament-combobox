@@ -14,7 +14,7 @@ You can install the package via composer:
 composer require novadaemon/filament-combobox
 ```
 
-This package supports Filament 3.x
+This package supports Filament 3.x and 4.x
 
 ## Usage
 
@@ -161,6 +161,7 @@ Optionally, you can publish the translations using
 ```bash
 php artisan vendor:publish --tag="filament-combobox-translations"
 ```
+
 Now, yo can modify or add custom translation files.
 
 ## Contributing
@@ -169,7 +170,7 @@ Contributing is pretty chill and is highly appreciated! Just send a PR and/or cr
 
 ## Credits
 
-- [All contributors](https://github.com/novadaemon/filament-combobox/contributors)
+-   [All contributors](https://github.com/novadaemon/filament-combobox/contributors)
 
 ## License
 

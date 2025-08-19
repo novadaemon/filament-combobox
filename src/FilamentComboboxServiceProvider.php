@@ -28,8 +28,10 @@ class FilamentComboboxServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageBooted(): void
+    public function boot(): void
     {
+        parent::boot();
+        
         FilamentAsset::register(
             $this->getAssets(),
             $this->getAssetPackageName()

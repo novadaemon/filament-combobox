@@ -3,9 +3,10 @@
 namespace Novadaemon\FilamentCombobox;
 
 use Closure;
+use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Concerns;
-use Filament\Forms\Components\Component;
+use Livewire\Attributes\On;
 
 class Combobox extends Select
 {
@@ -31,11 +32,9 @@ class Combobox extends Select
         $this->optionsLabel = __('filament-combobox::translations.labels.options');
         $this->selectedLabel = __('filament-combobox::translations.labels.selected');
 
-        $this->registerListeners([
-            'filament-combobox::updateState' => [fn (Component $component, string $statePath, array $values) => $statePath === $component->getStatePath() ? $this->updateState($values) : null],
-        ]);
     }
 
+    #[On('filament-combobox::updateState')]
     public function updateState(array $values): void
     {
         $values = collect($values)->pluck('value')->toArray();
