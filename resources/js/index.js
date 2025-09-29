@@ -2,7 +2,7 @@ export default function cbFormComponent({
   options,
   selected,
   statePath,
-  wire
+  state
 }) {
     return {
         options: [],
@@ -10,7 +10,7 @@ export default function cbFormComponent({
         optionsOriginal: [],
         selectedOriginal: [],
         allOptions: [],
-        wire: wire,
+        state: state,
         statePath: statePath,
         searchState: {
             options: {
@@ -184,7 +184,7 @@ export default function cbFormComponent({
 
             this.syncDisplayWithMaster();
 
-            wire.dispatch('filament-combobox::updateState', this.statePath, this.selectedOriginal);
+            this.state = this.selectedOriginal.map(item => item.value);
         }
     }
 }

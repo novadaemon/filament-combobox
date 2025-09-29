@@ -3,11 +3,8 @@
 namespace Novadaemon\FilamentCombobox;
 
 use Closure;
-use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Concerns;
-use Livewire\Attributes\On;
-
 class Combobox extends Select
 {
     use Concerns\HasOptions;
@@ -32,14 +29,6 @@ class Combobox extends Select
         $this->optionsLabel = __('filament-combobox::translations.labels.options');
         $this->selectedLabel = __('filament-combobox::translations.labels.selected');
 
-    }
-
-    #[On('filament-combobox::updateState')]
-    public function updateState(array $values): void
-    {
-        $values = collect($values)->pluck('value')->toArray();
-        $this->state($values);
-        $this->callAfterStateUpdated();
     }
 
     public function isMultiple(): bool

@@ -12,7 +12,7 @@
         x-ignore 
         x-load
         x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('combobox', 'novadaemon/filament-combobox') }}"
-        x-data="cbFormComponent({ options: @js($options), selected: @js($selected), wire: $wire, statePath: @js($statePath) })" wire:ignore>
+        x-data="cbFormComponent({ options: @js($options), selected: @js($selected), statePath: @js($statePath),state: $wire.$entangle('{{ $statePath }}') })" wire:ignore>
 
         @if ($showLabels)
             <div class="filament-combobox-labels">
