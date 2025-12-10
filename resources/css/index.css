@@ -1,88 +1,88 @@
-@import '../../vendor/filament/filament/resources/css/theme.css';
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Custom styles for FilamentCombobox component */
-@layer components {
-    .filament-combobox-container {
-        @apply flex flex-col gap-2 items-center;
-    }
-    
-    .filament-combobox-labels {
-        @apply w-full flex;
-    }
-    
-    .filament-combobox-label-section {
-        @apply w-1/2;
-    }
-    
-    .filament-combobox-spacer {
-        @apply w-20;
-    }
+.filament-combobox-container {
+    @apply flex flex-col gap-2 items-center;
+}
 
-    .filament-combobox-options-spacer {
-      @apply w-20 flex flex-col gap-1 justify-center items-center h-full;
-    }
-    
-    .filament-combobox-search-container {
-        @apply w-full flex;
-    }
-    
-    .filament-combobox-main-container {
-        @apply w-full flex;
-    }
-    
-    .filament-combobox-box {
-        @apply border border-gray-200 dark:border-gray-600 rounded-lg bg-white/60 dark:bg-neutral-800/70 overflow-y-auto h-full;
-    }
-    
-    .filament-combobox-box.disabled {
-        @apply bg-gray-50 text-gray-500 [-webkit-text-fill-color:theme(colors.gray.500)] dark:text-gray-400 dark:[-webkit-text-fill-color:theme(colors.gray.400)];
-    }
-    
-    .filament-combobox-list {
-        @apply py-1 text-base text-gray-950 dark:text-white sm:text-sm sm:leading-6;
-    }
-    
-    .filament-combobox-item {
-        @apply block px-1 py-1;
-    }
-    
-    .filament-combobox-item.interactive {
-        @apply hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer;
-    }
-    
-    .filament-combobox-item.highlighted {
-        @apply !bg-gray-200 dark:!bg-gray-500;
-    }
-    
-    .filament-combobox-button {
-        @apply border border-gray-200 rounded size-8 dark:border-gray-500 flex items-center justify-center;
-    }
-    
-    .filament-combobox-button.interactive {
-        @apply hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer;
-    }
-    
-    .filament-combobox-button:disabled {
-        @apply opacity-40;
-    }
-    
-    .filament-combobox-input-wrapper {
-        @apply flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 focus-within:ring-primary-600 dark:focus-within:ring-primary-500 mb-2;
-    }
-    
-    .filament-combobox-input-container {
-        @apply min-w-0 flex-1;
-    }
-    
-    .filament-combobox-label {
-        @apply flex items-center justify-between gap-x-3;
-    }
-    
-    .filament-combobox-label-text {
-        @apply inline-flex items-center gap-x-3;
-    }
-    
-    .filament-combobox-label-span {
-        @apply text-sm font-medium leading-6 text-gray-950 dark:text-white;
-    }
+.filament-combobox-labels {
+    @apply w-full flex;
+}
+
+.filament-combobox-label-section {
+    @apply w-1/2;
+}
+
+.filament-combobox-spacer {
+    @apply w-20;
+}
+
+.filament-combobox-options-spacer {
+    @apply w-20 flex flex-col gap-1 justify-center items-center h-full;
+}
+
+.filament-combobox-search-container {
+    @apply w-full flex;
+}
+
+.filament-combobox-main-container {
+    @apply w-full flex;
+}
+
+.filament-combobox-box {
+    @apply border border-gray-200 dark:border-gray-600 rounded-lg bg-white/60 dark:bg-neutral-800/70 overflow-y-auto h-full;
+}
+
+.filament-combobox-box.disabled {
+    @apply bg-gray-50 text-gray-500 [-webkit-text-fill-color:theme(colors.gray.500)] dark:text-gray-400 dark:[-webkit-text-fill-color:theme(colors.gray.400)];
+}
+
+.filament-combobox-list {
+    @apply py-1 text-base text-gray-950 dark:text-white sm:text-sm sm:leading-6;
+}
+
+.filament-combobox-item {
+    @apply block px-1 py-1;
+}
+
+.filament-combobox-item.interactive {
+    @apply hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer;
+}
+
+.filament-combobox-item.highlighted {
+    @apply !bg-gray-200 dark:!bg-gray-500;
+}
+
+.filament-combobox-button {
+    @apply border border-gray-200 rounded size-8 dark:border-gray-500 flex items-center justify-center;
+}
+
+.filament-combobox-button.interactive {
+    @apply hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer;
+}
+
+.filament-combobox-button:disabled {
+    @apply opacity-40;
+}
+
+.filament-combobox-input-wrapper {
+    @apply flex rounded-lg shadow-sm ring-1 transition duration-75 bg-white dark:bg-white/5 focus-within:ring-2 ring-gray-950/10 dark:ring-white/20 focus-within:ring-[var(--primary-600)] dark:focus-within:ring-[var(--primary-500)] mb-2;
+}
+
+.filament-combobox-input-container {
+    @apply min-w-0 flex-1;
+}
+
+.filament-combobox-label {
+    @apply flex items-center justify-between gap-x-3;
+}
+
+.filament-combobox-label-text {
+    @apply inline-flex items-center gap-x-3;
+}
+
+.filament-combobox-label-span {
+    @apply text-sm font-medium leading-6 text-gray-950 dark:text-white;
 }
