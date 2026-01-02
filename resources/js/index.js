@@ -2,7 +2,8 @@ export default function cbFormComponent({
   options,
   selected,
   statePath,
-  state
+  state,
+  wire,
 }) {
     return {
         options: [],
@@ -11,6 +12,7 @@ export default function cbFormComponent({
         selectedOriginal: [],
         allOptions: [],
         state: state,
+        wire: wire,
         statePath: statePath,
         searchState: {
             options: {
@@ -40,7 +42,7 @@ export default function cbFormComponent({
                     highlighted: false
                 };
 
-                if (selected.includes(option.value)) {
+                if (selected.map(String).includes(String(option.value))) {
                     this.selectedOriginal.push(item);
                 } else {
                     this.optionsOriginal.push(item);
@@ -185,6 +187,7 @@ export default function cbFormComponent({
             this.syncDisplayWithMaster();
 
             this.state = this.selectedOriginal.map(item => item.value);
+
         }
     }
 }

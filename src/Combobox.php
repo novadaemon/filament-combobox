@@ -4,12 +4,9 @@ namespace Novadaemon\FilamentCombobox;
 
 use Closure;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Concerns;
+
 class Combobox extends Select
 {
-    use Concerns\HasOptions;
-    use Concerns\HasPivotData;
-
     protected bool | Closure $showLabels = true;
 
     protected string | Closure $optionsLabel;
